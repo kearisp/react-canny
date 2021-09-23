@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "/",
+        "declaration": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": true,
+        "jsx": "react-jsx",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noEmit": false,
+        "noFallthroughCasesInSwitch": true,
+        "outDir": "./lib",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "target": "es2015",
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "lib",
+        "./**/__tests__/*"
+    ],
+    "include": [
+        "src/**/*"
+    ]
+}

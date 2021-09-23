@@ -1,0 +1,7 @@
+# misc
+/.idea
+
+# dependencies
+/node_modules
+/lib
+/package-lock.json

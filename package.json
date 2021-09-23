@@ -1,0 +1,38 @@
+{
+    "name": "react-canny",
+    "version": "0.0.1",
+    "license": "ISC",
+    "author": "Kris Papercut <kearis666@gmail.com>",
+    "description": "Canny.io integration for react",
+    "keywords": [
+        "react",
+        "canny.io"
+    ],
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/kearisp/react-canny.git"
+    },
+    "homepage": "https://github.com/kearisp/react-canny/blob/master/README.md",
+    "scripts": {
+        "prepare": "npm run build",
+        "watch": "tsc --watch",
+        "build": "tsc --build",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {},
+    "peerDependencies": {
+        "react": "^16.8.x"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.14.8",
+        "@babel/core": "^7.15.0",
+        "@babel/plugin-transform-typescript": "^7.15.0",
+        "@babel/preset-env": "^7.15.0",
+        "@babel/preset-react": "^7.14.5",
+        "@babel/preset-typescript": "^7.15.0",
+        "@types/react": "^17.0.17",
+        "typescript": "^4.3.5"
+    }
+}
