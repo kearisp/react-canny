@@ -38,7 +38,7 @@ const CannyProvider:React.FC<Props> = (props:Props) => {
             setLoaded(true);
         }).catch((err) => {
             console.log(err);
-        })
+        });
     }, []);
 
     return (

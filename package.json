@@ -1,6 +1,6 @@
 {
     "name": "react-canny",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "license": "ISC",
     "author": "Kris Papercut <kearis666@gmail.com>",
     "description": "Canny.io integration for react",
@@ -16,6 +16,7 @@
     },
     "homepage": "https://github.com/kearisp/react-canny/blob/master/README.md",
     "scripts": {
+        "start": "npm run watch",
         "prepare": "npm run build",
         "watch": "tsc --watch",
         "build": "tsc --build",
@@ -23,7 +24,7 @@
     },
     "dependencies": {},
     "peerDependencies": {
-        "react": "^16.8.x"
+        "react": ">=16.8.x"
     },
     "devDependencies": {
         "@babel/cli": "^7.14.8",
