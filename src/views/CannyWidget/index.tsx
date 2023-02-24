@@ -1,44 +1,25 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
-import {useCannyContext} from "../../contexts/CannyContext";
+import { useCannyContext } from "../../contexts/CannyContext";
+import { CannyOptions } from "../../makes/Canny";
 
+const CannyWidget: React.FC<CannyOptions> = (props: CannyOptions) => {
+  const { basePath, boardToken, ssoToken, onLoadCallback } = props;
 
-type Props = {
-    basePath:string;
-    user?:{
-        id?:any;
-        email?:any;
-    },
-    boardToken?:string;
-    ssoToken?:string;
-};
+  const { canny, isLoaded } = useCannyContext();
 
-const CannyWidget:React.FC<Props> = (props:Props) => {
-    const {
+  useEffect(() => {
+    if (isLoaded) {
+      canny.render({
         basePath,
         boardToken,
-        ssoToken
-    } = props;
+        ssoToken,
+        onLoadCallback,
+      });
+    }
+  }, [ssoToken, isLoaded, basePath, boardToken]);
 
-    const {
-        canny,
-        isLoaded
-    } = useCannyContext();
-
-    useEffect(() => {
-        if(isLoaded) {
-            canny.render({
-                basePath,
-                boardToken,
-                ssoToken
-            });
-        }
-    }, [ssoToken, isLoaded]);
-
-    return (
-        <div data-canny="" />
-    );
+  return <div data-canny="" />;
 };
-
 
 export default CannyWidget;

@@ -33,8 +33,8 @@ const CannyProvider:React.FC<Props> = (props:Props) => {
     useEffect(() => {
         const loader = new CannyLoader();
 
-        loader.load().then((canny) => {
-            refCanny.current = canny;
+        loader.load().then((cannySDK) => {
+            refCanny.current = cannySDK;
             setLoaded(true);
         }).catch((err) => {
             console.log(err);
