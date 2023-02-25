@@ -33,7 +33,7 @@ const CannyWidget:React.FC<Props> = (props:Props) => {
                 ssoToken
             });
         }
-    }, [ssoToken, isLoaded]);
+    }, [ssoToken, isLoaded, basePath, boardToken]);
 
     return (
         <div data-canny="" />
