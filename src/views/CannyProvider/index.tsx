@@ -6,18 +6,16 @@ import React, {
     ReactNode
 } from "react";
 
-import {Canny} from "../../makes/Canny";
-import {CannyLoader} from "../../makes/CannyLoader";
-
-import {CannyContext} from "../../contexts/CannyContext";
+import {Canny, CannyLoader} from "../../makes";
+import {CannyContext} from "../../contexts";
 
 
 type Props = {
-    appId:string;
-    children:ReactNode;
+    appId: string;
+    children: ReactNode;
 };
 
-const CannyProvider:React.FC<Props> = (props:Props) => {
+const CannyProvider: React.FC<Props> = (props: Props) => {
     const {
         children,
         appId
@@ -31,14 +29,18 @@ const CannyProvider:React.FC<Props> = (props:Props) => {
     }, [isLoaded]);
 
     useEffect(() => {
-        const loader = new CannyLoader();
+        (async () => {
+            const loader = new CannyLoader();
 
-        loader.load().then((canny) => {
-            refCanny.current = canny;
-            setLoaded(true);
-        }).catch((err) => {
-            console.log(err);
-        });
+            try {
+                refCanny.current = await loader.load();
+
+                setLoaded(true);
+            }
+            catch(err) {
+                console.error(err);
+            }
+        })();
     }, []);
 
     return (
@@ -54,4 +56,5 @@ const CannyProvider:React.FC<Props> = (props:Props) => {
 };
 
 
-export default CannyProvider;
+export type {Props as CannyProviderProps};
+export {CannyProvider};

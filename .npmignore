@@ -4,8 +4,7 @@
 
 # dependencies
 /node_modules
-/package-lock.json
 /src
-/.eslintrc.js
+/.gitignore
+/package-lock.json
 /tsconfig.json
-/temp

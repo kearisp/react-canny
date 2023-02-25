@@ -1,13 +1,44 @@
-class Canny {
-    canny:any;
+export type RenderOptions = {
+    boardToken: string;
+    basePath?: string;
+    user?: {
+        id?: any;
+        email?: any;
+    };
+    ssoToken?: string;
+    onLoadCallback?: () => void;
+};
 
-    constructor(canny:any) {
+export type ChangeLogOptions = {
+    appID: string;
+    align: "top" | "bottom" | "left" | "right";
+    position: "top" | "bottom" | "left" | "right";
+    labelIDs?: string[];
+};
+
+
+class Canny {
+    canny: any;
+
+    constructor(canny: any) {
         this.canny = canny;
     }
 
-    async render(options:any) {
+    render(options: RenderOptions) {
         if(this.canny) {
             this.canny("render", options);
+        }
+    }
+
+    initChangelog(options: ChangeLogOptions) {
+        if(this.canny) {
+            this.canny("initChangelog", options);
+        }
+    }
+
+    closeChangelog() {
+        if(this.canny) {
+            this.canny("closeChangelog");
         }
     }
 }

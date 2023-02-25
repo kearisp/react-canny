@@ -1,8 +1,8 @@
 {
     "name": "react-canny",
-    "version": "0.0.3",
-    "license": "ISC",
-    "author": "Kris Papercut <kearis666@gmail.com>",
+    "version": "0.0.4",
+    "license": "MIT",
+    "author": "Kris Papercut <krispcut@gmail.com>",
     "description": "Canny.io integration for react",
     "keywords": [
         "react",
@@ -22,10 +22,10 @@
         "build": "tsc --build",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "dependencies": {},
     "peerDependencies": {
         "react": ">=16.8.x"
     },
+    "dependencies": {},
     "devDependencies": {
         "@babel/cli": "^7.14.8",
         "@babel/core": "^7.15.0",

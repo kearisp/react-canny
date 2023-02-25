@@ -16,7 +16,7 @@ class CannyLoader {
 
         return new Promise((resolve, reject) => {
             script.onload = () => {
-                resolve((window as any).Canny);
+                resolve(this.Canny);
             };
 
             script.onerror = (err) => {

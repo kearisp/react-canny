@@ -1,7 +1,6 @@
-export {
-    useCannyContext,
-    CannyContext
-} from "./contexts/CannyContext";
+export * from "./contexts";
+export * from "./makes";
+export * from "./views";
 
-export {default as CannyProvider} from "./views/CannyProvider";
-export {default as CannyWidget} from "./views/CannyWidget";
+// Old version support
+export {CannyFeedback as CannyWidget} from "./views";
