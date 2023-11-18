@@ -14,6 +14,7 @@ const CannyFeedback: React.FC<Props> = (props: Props) => {
         basePath,
         boardToken,
         ssoToken,
+        theme,
         onLoadCallback,
         ...rest
     } = props;
@@ -28,15 +29,18 @@ const CannyFeedback: React.FC<Props> = (props: Props) => {
     } = useCannyContext();
 
     useEffect(() => {
-        if(isLoaded) {
-            canny.render({
-                basePath,
-                boardToken,
-                ssoToken,
-                onLoadCallback: handleLoad.current
-            });
+        if(!isLoaded) {
+            return;
         }
-    }, [ssoToken, isLoaded, basePath, boardToken]);
+
+        canny.render({
+            basePath,
+            boardToken,
+            ssoToken,
+            theme,
+            onLoadCallback: handleLoad.current
+        });
+    }, [ssoToken, boardToken, basePath, isLoaded, theme]);
 
     return (
         <Component

@@ -5,3 +5,8 @@
 /node_modules
 /lib
 /package-lock.json
+/pnpm-lock.yaml
+
+.env
+.env.*
+.env.*.local

@@ -1,10 +1,7 @@
 export type RenderOptions = {
     boardToken: string;
-    basePath?: string;
-    user?: {
-        id?: any;
-        email?: any;
-    };
+    basePath?: null | string;
+    theme?: "auto" | "light" | "dark";
     ssoToken?: string;
     onLoadCallback?: () => void;
 };
@@ -22,6 +19,10 @@ class Canny {
 
     constructor(canny: any) {
         this.canny = canny;
+    }
+
+    identify(appID: string, user: any) {
+        this.canny("identify", {appID, user});
     }
 
     render(options: RenderOptions) {

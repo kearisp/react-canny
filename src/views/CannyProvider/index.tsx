@@ -3,22 +3,29 @@ import React, {
     useEffect,
     useRef,
     useMemo,
-    ReactNode
+    PropsWithChildren
 } from "react";
 
 import {Canny, CannyLoader} from "../../makes";
 import {CannyContext} from "../../contexts";
 
 
-type Props = {
+type Props = PropsWithChildren<{
     appId: string;
-    children: ReactNode;
-};
+    user?: {
+        id: number | string;
+        name: string;
+        email: string;
+        avatarURL?: string;
+        created?: string;
+    };
+}>;
 
 const CannyProvider: React.FC<Props> = (props: Props) => {
     const {
-        children,
-        appId
+        appId,
+        user,
+        children
     } = props;
 
     const [isLoaded, setLoaded] = useState(false);
@@ -42,6 +49,14 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if(!isLoaded) {
+            return;
+        }
+
+        canny.identify(appId, user);
+    }, [isLoaded, appId, user]);
 
     return (
         <CannyContext.Provider

@@ -7,4 +7,9 @@
 /src
 /.gitignore
 /package-lock.json
+/pnpm-lock.yaml
 /tsconfig.json
+
+.env
+.env.*
+.env.*.local
