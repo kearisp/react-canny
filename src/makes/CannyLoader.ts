@@ -3,7 +3,7 @@ class CannyLoader {
         return (window as any).Canny;
     }
 
-    async load() {
+    async load(subdomain?: string, domain?: string) {
         if(this.Canny) {
             return this.Canny;
         }
@@ -12,7 +12,18 @@ class CannyLoader {
 
         script.type = "text/javascript";
         script.async = true;
-        script.src = "https://canny.io/sdk.js";
+
+        const url = new URL("https://canny.io/sdk.js");
+
+        if(subdomain) {
+            url.hostname = `${subdomain}.canny.io`;
+        }
+
+        if(domain) {
+            url.hostname = domain;
+        }
+
+        script.src = url.toString();
 
         return new Promise((resolve, reject) => {
             script.onload = () => {

@@ -3,6 +3,7 @@
 /.git
 
 # dependencies
+/.github
 /node_modules
 /src
 /.gitignore

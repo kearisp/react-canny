@@ -12,6 +12,8 @@ import {CannyContext} from "../../contexts";
 
 type Props = PropsWithChildren<{
     appId: string;
+    domain?: string;
+    subdomain?: string;
     user?: {
         id: number | string;
         name: string;
@@ -24,6 +26,8 @@ type Props = PropsWithChildren<{
 const CannyProvider: React.FC<Props> = (props: Props) => {
     const {
         appId,
+        domain,
+        subdomain,
         user,
         children
     } = props;
@@ -40,7 +44,7 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
             const loader = new CannyLoader();
 
             try {
-                refCanny.current = await loader.load();
+                refCanny.current = await loader.load(subdomain, domain);
 
                 setLoaded(true);
             }

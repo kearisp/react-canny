@@ -1,6 +1,6 @@
 {
     "name": "react-canny",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "license": "MIT",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "description": "Canny.io integration for react",
@@ -28,6 +28,6 @@
     "devDependencies": {
         "@types/react": ">=16.8.0",
         "react": ">=16.8.0",
-        "typescript": "x.x.x"
+        "typescript": "^5.2.2"
     }
 }
