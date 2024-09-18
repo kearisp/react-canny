@@ -1,6 +1,6 @@
 {
     "name": "react-canny",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "license": "MIT",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "description": "Canny.io integration for react",

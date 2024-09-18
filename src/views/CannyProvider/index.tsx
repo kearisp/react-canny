@@ -13,7 +13,6 @@ import {CannyContext} from "../../contexts";
 type Props = PropsWithChildren<{
     appId: string;
     domain?: string;
-    onIdentify?: () => void;
     subdomain?: string;
     user?: {
         id: number | string;
@@ -22,20 +21,28 @@ type Props = PropsWithChildren<{
         avatarURL?: string;
         created?: string;
     };
+    onIdentify?: () => void;
 }>;
+
+type Data = Pick<Props, "appId" | "user" | "onIdentify">;
 
 const CannyProvider: React.FC<Props> = (props: Props) => {
     const {
         appId,
         domain,
-        onIdentify,
         subdomain,
         user,
-        children
+        children,
+        onIdentify
     } = props;
 
     const [isLoaded, setLoaded] = useState(false);
     const refCanny = useRef<any|null>(null);
+    const dataRef = useRef<Data>({
+        appId,
+        user,
+        onIdentify
+    });
 
     const canny = useMemo(() => {
         return new Canny(refCanny.current);
@@ -57,12 +64,24 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
     }, []);
 
     useEffect(() => {
+        dataRef.current = {
+            appId,
+            user,
+            onIdentify
+        };
+    }, [appId, user, onIdentify]);
+
+    useEffect(() => {
         if(!isLoaded) {
             return;
         }
 
-        canny.identify(appId, user, onIdentify);
-    }, [isLoaded, appId, user]);
+        canny.identify(
+            dataRef.current.appId,
+            dataRef.current.user,
+            dataRef.current.onIdentify
+        );
+    }, [isLoaded]);
 
     return (
         <CannyContext.Provider

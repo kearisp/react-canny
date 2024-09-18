@@ -15,36 +15,44 @@ export type ChangeLogOptions = {
 
 
 class Canny {
-    canny: any;
+    public constructor(
+        protected canny: any
+    ) {}
 
-    constructor(canny: any) {
-        this.canny = canny;
-    }
-
-    identify(appID: string, user: any, callback?: () => void) {
+    public identify(appID: string, user: any, callback?: () => void): void {
         this.canny("identify", {appID, user}, callback);
     }
 
-    authenticateCannyLink(url: string) {
+    public authenticateCannyLink(url: string): string {
+        if(!this.canny) {
+            return url;
+        }
+
         return this.canny("authenticateCannyLink", url);
     }
 
-    render(options: RenderOptions) {
-        if(this.canny) {
-            this.canny("render", options);
+    public render(options: RenderOptions): void {
+        if(!this.canny) {
+            return;
         }
+
+        this.canny("render", options);
     }
 
-    initChangelog(options: ChangeLogOptions) {
-        if(this.canny) {
-            this.canny("initChangelog", options);
+    public initChangelog(options: ChangeLogOptions): void {
+        if(!this.canny) {
+            return;
         }
+
+        this.canny("initChangelog", options);
     }
 
-    closeChangelog() {
-        if(this.canny) {
-            this.canny("closeChangelog");
+    public closeChangelog(): void {
+        if(!this.canny) {
+            return;
         }
+
+        this.canny("closeChangelog");
     }
 }
 

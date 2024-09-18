@@ -107,9 +107,9 @@ import { CannyProvider } from "react-canny";
 const APP_ID = "/* Your app id */";
 
 const USER = {
-    id: '/* User id */';
-    name: '/* User name */';
-    email: '/* User email */';
+    id: "/* User id */",
+    name: "/* User name */",
+    email: "/* User email */"
 };
 
 const App = () => {
@@ -133,9 +133,9 @@ import { CannyProvider, useCannyContext } from "react-canny";
 
 const APP_ID = "/* Your app id */";
 const USER = {
-    id: '/* User id */';
-    name: '/* User name */';
-    email: '/* User email */';
+    id: "/* User id */",
+    name: "/* User name */",
+    email: "/* User email */"
 };
 const CANNY_URL = 'https://my-subdomain.canny.io';
 
@@ -150,7 +150,12 @@ const App = () => {
 };
 
 const CannyLink = ({ children, href }) => {
-    const { canny } = useCannyContext();
+    const { canny, isLoaded } = useCannyContext();
+
+    if(!isLoaded) {
+        return null;
+    }
+
     return (
         <a href={canny.authenticateCannyLink(href)}>{children}</a>
     );
