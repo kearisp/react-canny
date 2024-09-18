@@ -99,7 +99,7 @@ const App = () => {
 
 ### Identify & Authentication
 
-To use Canny Identify is built-into the provider, providing the user details will trigger user identification.
+Canny Identify is built-into the CannyProvider, and specifying the user details will trigger user identification.
 
 ```jsx
 import { CannyProvider } from "react-canny";
@@ -126,7 +126,7 @@ const App = () => {
 };
 ```
 
-If "identify" isn't working and you need to generate an authenticated link yourself, use `authenticateCannyLink`.
+If Canny Identify isn't working and you need to generate an authenticated link yourself, use `authenticateCannyLink`.
 
 ```jsx
 import { CannyProvider, useCannyContext } from "react-canny";
