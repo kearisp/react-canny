@@ -13,6 +13,7 @@ import {CannyContext} from "../../contexts";
 type Props = PropsWithChildren<{
     appId: string;
     domain?: string;
+    onIdentify?: () => void;
     subdomain?: string;
     user?: {
         id: number | string;
@@ -27,6 +28,7 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
     const {
         appId,
         domain,
+        onIdentify,
         subdomain,
         user,
         children
@@ -59,7 +61,7 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
             return;
         }
 
-        canny.identify(appId, user);
+        canny.identify(appId, user, onIdentify);
     }, [isLoaded, appId, user]);
 
     return (

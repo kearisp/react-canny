@@ -96,3 +96,63 @@ const App = () => {
     );
 };
 ```
+
+### Identify & Authentication
+
+To use Canny Identify is built-into the provider, providing the user details will trigger user identification.
+
+```jsx
+import { CannyProvider } from "react-canny";
+
+const APP_ID = "/* Your app id */";
+
+const USER = {
+    id: '/* User id */';
+    name: '/* User name */';
+    email: '/* User email */';
+};
+
+const App = () => {
+    const onIdentify = () => {
+        /* An optional callback */
+    };
+
+    return (
+        <CannyProvider
+          appId={APP_ID}
+          user={USER}
+          onIdentify={onIdentify} />
+    );
+};
+```
+
+If "identify" isn't working and you need to generate an authenticated link yourself, use `authenticateCannyLink`.
+
+```jsx
+import { CannyProvider, useCannyContext } from "react-canny";
+
+const APP_ID = "/* Your app id */";
+const USER = {
+    id: '/* User id */';
+    name: '/* User name */';
+    email: '/* User email */';
+};
+const CANNY_URL = 'https://my-subdomain.canny.io';
+
+const App = () => {
+    return (
+        <CannyProvider appId={APP_ID} user={USER}>
+            <CannyLink href={CANNY_URL}>
+                Leave feedback
+            </CannyLink>
+        </CannyProvider>
+    );
+};
+
+const CannyLink = ({ children, href }) => {
+    const { canny } = useCannyContext();
+    return (
+        <a href={canny.authenticateCannyLink(href)}>{children}</a>
+    );
+};
+```

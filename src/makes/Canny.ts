@@ -21,8 +21,12 @@ class Canny {
         this.canny = canny;
     }
 
-    identify(appID: string, user: any) {
-        this.canny("identify", {appID, user});
+    identify(appID: string, user: any, callback?: () => void) {
+        this.canny("identify", {appID, user}, callback);
+    }
+
+    authenticateCannyLink(url: string) {
+        return this.canny("authenticateCannyLink", url);
     }
 
     render(options: RenderOptions) {
