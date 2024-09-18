@@ -20,6 +20,10 @@ class Canny {
     ) {}
 
     public identify(appID: string, user: any, callback?: () => void): void {
+        if(!this.canny) {
+            return;
+        }
+
         this.canny("identify", {appID, user}, callback);
     }
 
