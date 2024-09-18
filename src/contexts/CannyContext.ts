@@ -17,7 +17,7 @@ const CannyContext = createContext<CannyContextProps>({
     canny: new Canny(null)
 });
 
-const useCannyContext = () => {
+const useCannyContext = (): CannyContextProps => {
     return useContext(CannyContext);
 };
 
