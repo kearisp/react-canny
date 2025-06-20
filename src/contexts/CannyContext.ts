@@ -1,28 +1,20 @@
-import {
-    createContext,
-    useContext
-} from "react";
-
+import {createContext, useContext} from "react";
 import {Canny} from "../makes";
 
 
 type CannyContextProps = {
     appId?: string;
     isLoaded: boolean;
+    isIdentified: boolean;
     canny: Canny;
 };
 
-const CannyContext = createContext<CannyContextProps>({
+export const CannyContext = createContext<CannyContextProps>({
     isLoaded: false,
-    canny: new Canny(null)
+    isIdentified: false,
+    canny: new Canny()
 });
 
-const useCannyContext = (): CannyContextProps => {
+export const useCannyContext = (): CannyContextProps => {
     return useContext(CannyContext);
-};
-
-
-export {
-    useCannyContext,
-    CannyContext
 };
