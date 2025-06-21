@@ -18,7 +18,7 @@ export const CannyFeedback: React.FC<CannyFeedbackProps> = (props) => {
         ...rest
     } = props;
 
-    const handleLoad = useRef<typeof onLoadCallback>(null);
+    const handleLoad = useRef<typeof onLoadCallback>(onLoadCallback);
 
     handleLoad.current = onLoadCallback;
 
