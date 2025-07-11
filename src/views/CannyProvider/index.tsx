@@ -1,4 +1,4 @@
-import React, {useState, useRef, useMemo, useEffect, PropsWithChildren} from "react";
+import React, {useState, useMemo, useRef, useEffect, PropsWithChildren} from "react";
 import {Canny, CannyLoader} from "../../makes";
 import {CannyContext} from "../../contexts";
 
@@ -29,30 +29,13 @@ export const CannyProvider: React.FC<CannyProviderProps> = (props: CannyProvider
 
     const [isLoaded, setLoaded] = useState(false),
           [isIdentified, setIdentified] = useState(false),
+          canny = useMemo(() => new Canny(), []),
           onIdentifyRef = useRef(onIdentify);
 
-    const canny = useMemo(() => {
-        return new Canny();
-    }, []);
+    onIdentifyRef.current = onIdentify;
 
     useEffect(() => {
         let mounted = true;
-
-        canny.identify(
-            appId,
-            user,
-            (...data) => {
-                if(!mounted) {
-                    return;
-                }
-
-                setIdentified(true);
-
-                if(onIdentifyRef.current) {
-                    onIdentifyRef.current(...data);
-                }
-            }
-        );
 
         (async () => {
             try {
@@ -85,6 +68,30 @@ export const CannyProvider: React.FC<CannyProviderProps> = (props: CannyProvider
             mounted = false;
         };
     }, []);
+
+    useEffect(() => {
+        if(!user) {
+            return;
+        }
+
+        let mounted = true;
+
+        canny.identify(appId, user, (...data) => {
+            if(!mounted) {
+                return;
+            }
+
+            setIdentified(true);
+
+            if(onIdentifyRef.current) {
+                onIdentifyRef.current(...data);
+            }
+        });
+
+        return () => {
+            mounted = false;
+        };
+    }, [appId, user]);
 
     return (
         <CannyContext.Provider

@@ -41,7 +41,6 @@ export class Canny {
 
     public identify(appID: string, user: any, callback?: () => void): void {
         this.push("identify", {appID, user}, callback);
-        this.flush();
     }
 
     public authenticateCannyLink(url: string): string {

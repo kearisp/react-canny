@@ -26,11 +26,13 @@ jobs:
           - name: Setup Node.js
             uses: actions/setup-node@v4
             with:
-                node-version: 22
+                node-version: 24
                 registry-url: 'https://registry.npmjs.org'
 
           - name: Setup beta version
-            uses: ./.github/actions/beta-version
+            uses: kearisp/npm-version-action@v0.0.1
+            with:
+                tag: beta
 
           - name: Cache dependencies
             uses: actions/cache@v4

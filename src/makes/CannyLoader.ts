@@ -1,5 +1,4 @@
 export class CannyLoader {
-    protected static isLoaded: boolean = false
     protected static loaders: {
         [script: string]: CannyLoader;
     } = {};
