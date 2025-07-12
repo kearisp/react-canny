@@ -3,19 +3,18 @@ import React, {
     ElementType,
     PropsWithChildren
 } from "react";
-
 import {ChangeLogOptions} from "../../makes";
 import {useCannyContext} from "../../contexts";
 
 
-type Props = PropsWithChildren<{
+export type CannyChangelogProps = PropsWithChildren<{
     component?: ElementType;
     className?: string;
 } & Partial<Omit<ChangeLogOptions, "appId">> & {
     [prop: string]: any;
 }>;
 
-const CannyChangelog: React.FC<Props> = (props) => {
+export const CannyChangelog: React.FC<CannyChangelogProps> = (props) => {
     const {
         component: Component = "button",
         align = "left",
@@ -26,23 +25,24 @@ const CannyChangelog: React.FC<Props> = (props) => {
     } = props;
 
     const {
-        isLoaded,
         appId,
         canny
     } = useCannyContext();
 
     useEffect(() => {
-        if(isLoaded && appId) {
-            canny.initChangelog({
-                appID: appId,
-                align,
-                position,
-                labelIDs
-            });
-
-            return () => canny.closeChangelog();
+        if(!appId) {
+            return;
         }
-    }, [isLoaded, appId, align, position, labelIDs]);
+
+        canny.initChangelog({
+            appID: appId,
+            align,
+            position,
+            labelIDs
+        });
+
+        return () => canny.closeChangelog();
+    }, [appId, align, position, labelIDs]);
 
     return (
         <Component
@@ -52,7 +52,3 @@ const CannyChangelog: React.FC<Props> = (props) => {
         </Component>
     );
 };
-
-
-export type {Props as CannyChangelogProps};
-export {CannyChangelog};

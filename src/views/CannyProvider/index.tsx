@@ -1,16 +1,9 @@
-import React, {
-    useState,
-    useEffect,
-    useRef,
-    useMemo,
-    PropsWithChildren
-} from "react";
-
+import React, {useState, useMemo, useRef, useEffect, PropsWithChildren} from "react";
 import {Canny, CannyLoader} from "../../makes";
 import {CannyContext} from "../../contexts";
 
 
-type Props = PropsWithChildren<{
+export type CannyProviderProps = PropsWithChildren<{
     appId: string;
     domain?: string;
     subdomain?: string;
@@ -24,9 +17,7 @@ type Props = PropsWithChildren<{
     onIdentify?: () => void;
 }>;
 
-type Data = Pick<Props, "appId" | "user" | "onIdentify">;
-
-const CannyProvider: React.FC<Props> = (props: Props) => {
+export const CannyProvider: React.FC<CannyProviderProps> = (props: CannyProviderProps) => {
     const {
         appId,
         domain,
@@ -36,24 +27,35 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
         onIdentify
     } = props;
 
-    const [isLoaded, setLoaded] = useState(false);
-    const refCanny = useRef<any|null>(null);
-    const dataRef = useRef<Data>({
-        appId,
-        user,
-        onIdentify
-    });
+    const [isLoaded, setLoaded] = useState(false),
+          [isIdentified, setIdentified] = useState(false),
+          canny = useMemo(() => new Canny(), []),
+          onIdentifyRef = useRef(onIdentify);
 
-    const canny = useMemo(() => {
-        return new Canny(refCanny.current);
-    }, [isLoaded]);
+    onIdentifyRef.current = onIdentify;
 
     useEffect(() => {
-        (async () => {
-            const loader = new CannyLoader();
+        let mounted = true;
 
+        (async () => {
             try {
-                refCanny.current = await loader.load(subdomain, domain);
+                let url = new URL("https://canny.io/sdk.js");
+
+                if(subdomain) {
+                    url.hostname = `${subdomain}.canny.io`;
+                }
+
+                if(domain) {
+                    url.hostname = domain;
+                }
+
+                await CannyLoader.load("canny-jssdk", url.toString());
+
+                canny.flush();
+
+                if(!mounted) {
+                    return;
+                }
 
                 setLoaded(true);
             }
@@ -61,40 +63,45 @@ const CannyProvider: React.FC<Props> = (props: Props) => {
                 console.error(err);
             }
         })();
+
+        return () => {
+            mounted = false;
+        };
     }, []);
 
     useEffect(() => {
-        dataRef.current = {
-            appId,
-            user,
-            onIdentify
-        };
-    }, [appId, user, onIdentify]);
-
-    useEffect(() => {
-        if(!isLoaded) {
+        if(!user) {
             return;
         }
 
-        canny.identify(
-            dataRef.current.appId,
-            dataRef.current.user,
-            dataRef.current.onIdentify
-        );
-    }, [isLoaded]);
+        let mounted = true;
+
+        canny.identify(appId, user, (...data) => {
+            if(!mounted) {
+                return;
+            }
+
+            setIdentified(true);
+
+            if(onIdentifyRef.current) {
+                onIdentifyRef.current(...data);
+            }
+        });
+
+        return () => {
+            mounted = false;
+        };
+    }, [appId, user]);
 
     return (
         <CannyContext.Provider
           value={{
             appId,
             isLoaded,
+            isIdentified,
             canny
           }}>
             {children}
         </CannyContext.Provider>
     );
 };
-
-
-export type {Props as CannyProviderProps};
-export {CannyProvider};

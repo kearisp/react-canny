@@ -1,0 +1,72 @@
+name: Publish
+
+on:
+    release:
+        types:
+          - released
+
+jobs:
+    publish:
+        name: Publish latest
+        runs-on: ubuntu-latest
+        environment: publish
+        permissions:
+            contents: read
+            id-token: write
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+                node-version: 24
+                registry-url: 'https://registry.npmjs.org'
+
+          - name: Cache dependencies
+            uses: actions/cache@v4
+            with:
+                path: ~/.npm
+                key: ${{ runner.os }}-npm-${{ hashFiles('**/package.json') }}
+                restore-keys: |
+                    ${{ runner.os }}-npm-
+
+          - name: Install dependencies
+            shell: bash
+            run: npm install
+
+          - name: Publish to NPM
+            shell: bash
+            env:
+                NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+            run: npm publish --provenance
+
+    unpublish-beta:
+        name: Unpublish beta
+        if: ${{ github.repository_owner == 'kearisp' }}
+        runs-on: ubuntu-latest
+        environment: publish
+        needs: publish
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v4
+
+          - name: Setup Node.js
+            uses: actions/setup-node@v4
+            with:
+                node-version: 24
+                registry-url: 'https://registry.npmjs.org'
+
+          - name: Unpublish previous beta versions
+            shell: bash
+            env:
+                NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+            run: |
+                PACKAGE_NAME=$(npm pkg get name | sed -e 's/^"//' -e 's/"$//')
+                PACKAGE_VERSION=$(npm pkg get version | sed -e 's/^"//' -e 's/"$//')
+                BETA_VERSIONS=$(npm view $PACKAGE_NAME versions --json | jq -r '.[]' | grep -E "$PACKAGE_VERSION-beta\.[0-9]+$")
+
+                for VERSION in $BETA_VERSIONS; do
+                    npm unpublish $PACKAGE_NAME@$VERSION --force 2>/dev/null || npm deprecate $PACKAGE_NAME@$VERSION "This is the beta version. Why can't it be deleted?"
+                done
+

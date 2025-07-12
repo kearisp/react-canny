@@ -13,52 +13,53 @@ export type ChangeLogOptions = {
     labelIDs?: string[];
 };
 
+export class Canny {
+    protected static pull: any[][] = [];
 
-class Canny {
-    public constructor(
-        protected canny: any
-    ) {}
+    protected get handle() {
+        return (window as any).Canny;
+    }
 
-    public identify(appID: string, user: any, callback?: () => void): void {
-        if(!this.canny) {
+    protected push(...args: any[]): void {
+        Canny.pull.push(args);
+        this.flush();
+    }
+
+    public flush(): void {
+        if(!this.handle) {
             return;
         }
 
-        this.canny("identify", {appID, user}, callback);
+        while(Canny.pull.length > 0) {
+            const row = Canny.pull.shift();
+
+            if(row) {
+                this.handle(...row);
+            }
+        }
+    }
+
+    public identify(appID: string, user: any, callback?: () => void): void {
+        this.push("identify", {appID, user}, callback);
     }
 
     public authenticateCannyLink(url: string): string {
-        if(!this.canny) {
+        if(!this.handle) {
             return url;
         }
 
-        return this.canny("authenticateCannyLink", url);
+        return this.handle("authenticateCannyLink", url);
     }
 
     public render(options: RenderOptions): void {
-        if(!this.canny) {
-            return;
-        }
-
-        this.canny("render", options);
+        this.push("render", options)
     }
 
     public initChangelog(options: ChangeLogOptions): void {
-        if(!this.canny) {
-            return;
-        }
-
-        this.canny("initChangelog", options);
+        this.push("initChangelog", options);
     }
 
     public closeChangelog(): void {
-        if(!this.canny) {
-            return;
-        }
-
-        this.canny("closeChangelog");
+        this.push("closeChangelog");
     }
 }
-
-
-export {Canny};

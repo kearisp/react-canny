@@ -1,5 +1,13 @@
 # React Canny
 
+[![npm version](https://img.shields.io/npm/v/react-canny.svg)](https://www.npmjs.com/package/react-canny)
+[![Publish](https://github.com/kearisp/react-canny/actions/workflows/publish-latest.yml/badge.svg?event=release)](https://github.com/kearisp/react-canny/actions/workflows/publish-latest.yml)
+[![License](https://img.shields.io/npm/l/react-canny)](https://github.com/kearisp/react-canny/blob/main/LICENSE)
+
+[![npm total downloads](https://img.shields.io/npm/dt/react-canny.svg)](https://www.npmjs.com/package/react-canny)
+[![bundle size](https://img.shields.io/bundlephobia/minzip/react-canny)](https://bundlephobia.com/package/react-canny)
+
+
 ## Description
 
 [Canny.io](https://canny.io/) integration for react

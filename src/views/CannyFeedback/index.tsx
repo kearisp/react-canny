@@ -1,14 +1,13 @@
 import React, {useRef, useEffect, ElementType} from "react";
-
 import {useCannyContext} from "../../contexts";
 import {RenderOptions} from "../../makes";
 
 
-type Props = RenderOptions & {
+export type CannyFeedbackProps = RenderOptions & {
     component?: ElementType;
 };
 
-const CannyFeedback: React.FC<Props> = (props: Props) => {
+export const CannyFeedback: React.FC<CannyFeedbackProps> = (props) => {
     const {
         component: Component = "div",
         basePath,
@@ -19,20 +18,13 @@ const CannyFeedback: React.FC<Props> = (props: Props) => {
         ...rest
     } = props;
 
-    const handleLoad = useRef<typeof onLoadCallback>();
+    const handleLoad = useRef<typeof onLoadCallback>(onLoadCallback);
 
     handleLoad.current = onLoadCallback;
 
-    const {
-        isLoaded,
-        canny
-    } = useCannyContext();
+    const {canny} = useCannyContext();
 
     useEffect(() => {
-        if(!isLoaded) {
-            return;
-        }
-
         canny.render({
             basePath,
             boardToken,
@@ -40,7 +32,7 @@ const CannyFeedback: React.FC<Props> = (props: Props) => {
             theme,
             onLoadCallback: handleLoad.current
         });
-    }, [ssoToken, boardToken, basePath, isLoaded, theme]);
+    }, [ssoToken, boardToken, basePath, theme]);
 
     return (
         <Component
@@ -49,6 +41,3 @@ const CannyFeedback: React.FC<Props> = (props: Props) => {
     );
 };
 
-
-export type {Props as CannyFeedbackProps};
-export {CannyFeedback};

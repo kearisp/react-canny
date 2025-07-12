@@ -1,43 +1,76 @@
-class CannyLoader {
-    get Canny() {
-        return (window as any).Canny;
-    }
+export class CannyLoader {
+    protected static loaders: {
+        [script: string]: CannyLoader;
+    } = {};
+    protected _loader?: Promise<any>;
+    protected script: HTMLScriptElement;
 
-    async load(subdomain?: string, domain?: string) {
-        if(this.Canny) {
-            return this.Canny;
-        }
-
+    protected constructor(
+        protected readonly scriptId: string,
+        protected readonly href: string
+    ) {
         const script = document.createElement("script");
 
+        script.id = this.scriptId;
         script.type = "text/javascript";
         script.async = true;
+        script.src = this.href;
 
-        const url = new URL("https://canny.io/sdk.js");
+        this.script = script;
+    }
 
-        if(subdomain) {
-            url.hostname = `${subdomain}.canny.io`;
+    public get loader(): Promise<void> {
+        if(!this._loader) {
+            this._loader = new Promise<void>((resolve, reject) => {
+                const handleLoad = (): void => {
+                    resolve(this.handleLoad());
+                };
+
+                const handleError = (err: any): void => {
+                    reject(this.handleError(err));
+                };
+
+                if(this.script.addEventListener) {
+                    this.script.addEventListener("load", handleLoad);
+                    this.script.addEventListener("error", handleError);
+                }
+                else {
+                    this.script.onload = handleLoad;
+                    this.script.onerror = handleError;
+                }
+
+                document.head.append(this.script);
+            });
         }
 
-        if(domain) {
-            url.hostname = domain;
+        return this._loader;
+    }
+
+    protected handleLoad(): Promise<void> {
+        this._loader = Promise.resolve();
+
+        return this._loader;
+    }
+
+    protected handleError(err: any): Promise<void> {
+        this.script.remove();
+
+        delete this._loader;
+
+        if(CannyLoader.loaders[this.scriptId]) {
+            delete CannyLoader.loaders[this.scriptId];
         }
 
-        script.src = url.toString();
+        return Promise.reject(err);
+    }
 
-        return new Promise((resolve, reject) => {
-            script.onload = () => {
-                resolve(this.Canny);
-            };
+    public static async load(scriptId: string, href: string): Promise<void> {
+        if(!CannyLoader.loaders[scriptId]) {
+            CannyLoader.loaders[scriptId] = new CannyLoader(scriptId, href);
+        }
 
-            script.onerror = (err) => {
-                reject(err);
-            };
+        const loader: CannyLoader = CannyLoader.loaders[scriptId];
 
-            document.head.append(script);
-        });
+        return loader.loader;
     }
 }
-
-
-export {CannyLoader};

@@ -1,23 +1,26 @@
 {
     "name": "react-canny",
-    "version": "0.0.7",
-    "license": "MIT",
+    "version": "0.0.8",
     "author": "Kris Papercut <krispcut@gmail.com>",
     "description": "Canny.io integration for react",
+    "license": "MIT",
     "keywords": [
         "react",
         "canny.io"
     ],
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "./lib/index.js",
+    "types": "./lib/index.d.ts",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/kearisp/react-canny.git"
     },
     "homepage": "https://github.com/kearisp/react-canny/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/kearisp/react-canny/issues"
+    },
     "scripts": {
+        "prepublishOnly": "npm run build",
         "start": "npm run watch",
-        "prepare": "npm run build",
         "watch": "tsc --watch",
         "build": "tsc --build",
         "test": "echo \"Error: no test specified\" && exit 1"

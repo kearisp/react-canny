@@ -1,16 +1,30 @@
 # misc
-/.idea
+.idea
+.vscode/
 /.git
-
-# dependencies
-/.github
-/node_modules
-/src
 /.gitignore
-/package-lock.json
-/pnpm-lock.yaml
-/tsconfig.json
+.DS_Store
 
+# Source code
+/src
+/test
+*.spec.js
+
+# Build configs
 .env
 .env.*
 .env.*.local
+/package-lock.json
+/tsconfig.json
+/tsconfig.build.json
+
+# Builds
+/lib/tsconfig.tsbuildinfo
+/coverage
+
+# Dependency directories
+/node_modules
+
+# Development tools
+/.github
+
