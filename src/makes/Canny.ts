@@ -10,6 +10,7 @@ export type ChangeLogOptions = {
     appID: string;
     align: "top" | "bottom" | "left" | "right";
     position: "top" | "bottom" | "left" | "right";
+    theme?: "auto" | "light" | "dark";
     labelIDs?: string[];
 };
 
