@@ -19,6 +19,7 @@ export const CannyChangelog: React.FC<CannyChangelogProps> = (props) => {
         component: Component = "button",
         align = "left",
         position = "bottom",
+        theme = "auto",
         labelIDs,
         children,
         ...rest
@@ -38,11 +39,12 @@ export const CannyChangelog: React.FC<CannyChangelogProps> = (props) => {
             appID: appId,
             align,
             position,
+            theme,
             labelIDs
         });
 
         return () => canny.closeChangelog();
-    }, [appId, align, position, labelIDs]);
+    }, [appId, align, position, theme, labelIDs]);
 
     return (
         <Component
