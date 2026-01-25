@@ -27,6 +27,7 @@ jobs:
             uses: actions/setup-node@v6
             with:
                 node-version: 24
+                token: ${{ secrets.NODE_AUTH_TOKEN }}
                 registry-url: 'https://registry.npmjs.org'
 
           - name: Setup beta version
@@ -49,6 +50,4 @@ jobs:
           - name: Publish beta to NPM
             if: ${{ github.repository_owner == 'kearisp' }}
             shell: bash
-            env:
-                NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
             run: npm publish --provenance --tag beta

@@ -21,6 +21,7 @@ jobs:
             uses: actions/setup-node@v6
             with:
                 node-version: 24
+                token: ${{ secrets.NODE_AUTH_TOKEN }}
                 registry-url: 'https://registry.npmjs.org'
 
           - name: Cache dependencies
@@ -37,8 +38,6 @@ jobs:
 
           - name: Publish to NPM
             shell: bash
-            env:
-                NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
             run: npm publish --provenance
 
     unpublish-beta:
@@ -55,12 +54,11 @@ jobs:
             uses: actions/setup-node@v6
             with:
                 node-version: 24
+                token: ${{ secrets.NODE_AUTH_TOKEN }}
                 registry-url: 'https://registry.npmjs.org'
 
           - name: Unpublish previous beta versions
             shell: bash
-            env:
-                NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
             run: |
                 PACKAGE_NAME=$(npm pkg get name | sed -e 's/^"//' -e 's/"$//')
                 PACKAGE_VERSION=$(npm pkg get version | sed -e 's/^"//' -e 's/"$//')
